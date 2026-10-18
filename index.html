@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PowerSys Pro | Engineering Automation Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --primary: #00f0ff;
+  --primary-dark: #00c4cc;
+  --secondary: #7c3aed;
+  --accent: #f472b6;
+  --success: #22c55e;
+  --warning: #eab308;
+  --danger: #ef4444;
+  --bg-deep: #060b14;
+  --bg-card: #0f1729;
+  --bg-elevated: #1a2744;
+  --border: #2a3d5c;
+  --text: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-deep);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated background */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-1 { top: -200px; right: -100px; background: rgba(0,240,255,0.08); }
+.glow-2 { bottom: -200px; left: -100px; background: rgba(124,58,237,0.06); }
+
+/* Header */
+header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 40px 20px 30px;
+}
+
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(0,240,255,0.08);
+  border: 1px solid rgba(0,240,255,0.2);
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  font-size: 2.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 400;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Stats bar */
+.stats-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  padding: 15px 20px 30px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Main container */
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+/* Layout grid */
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+/* Cards */
+.card {
+  background: rgba(15, 23, 41, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.icon-cyan { background: rgba(0,240,255,0.12); color: var(--primary); }
+.icon-purple { background: rgba(124,58,237,0.12); color: var(--secondary); }
+.icon-pink { background: rgba(244,114,182,0.12); color: var(--accent); }
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.card-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Form inputs */
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+
+.input-hint {
+  font-size: 0.65rem;
+  font-weight: 400;
+  text-transform: none;
+  color: var(--text-muted);
+  letter-spacing: 0;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  background: rgba(6, 11, 20, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.input-wrapper input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,240,255,0.1);
+  background: rgba(6, 11, 20, 0.8);
+}
+
+.input-wrapper .icon-left {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.input-unit {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  width: 100%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #000;
+  font-size: 1rem;
+  box-shadow: 0 4px 20px rgba(0,240,255,0.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(0,240,255,0.35);
+}
+
+.btn-primary:active { transform: translateY(0); }
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.78rem;
+  border-radius: 8px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Results section */
+.results-card {
+  position: sticky;
+  top: 20px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.result-item {
+  background: rgba(6, 11, 20, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s;
+}
+
+.result-item.highlight {
+  border-color: var(--primary);
+  background: rgba(0,240,255,0.04);
+}
+
+.result-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.result-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.result-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.result-unit {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Status indicator */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.status-ok {
+  background: rgba(34,197,94,0.1);
+  color: var(--success);
+  border: 1px solid rgba(34,197,94,0.25);
+}
+
+.status-warn {
+  background: rgba(234,179,8,0.1);
+  color: var(--warning);
+  border: 1px solid rgba(234,179,8,0.25);
+}
+
+.status-danger {
+  background: rgba(239,68,68,0.1);
+  color: var(--danger);
+  border: 1px solid rgba(239,68,68,0.25);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(6, 11, 20, 0.6);
+  padding: 4px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  background: none;
+}
+
+.tab.active {
+  background: var(--bg-elevated);
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.tab:hover:not(.active) { color: var(--text-secondary); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Preset selector */
+.presets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.preset-btn {
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: rgba(6,11,20,0.6);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.preset-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* Output panel */
+.output-panel {
+  background: rgba(6, 11, 20, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+}
+
+/* Actions row */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.actions .btn { flex: 1; }
+
+/* Footer */
+footer {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 30px 20px;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+}
+
+.footer-brand {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.footer-tech {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.footer-tech span {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 20px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Print styles */
+@media print {
+  body { background: white; color: black; }
+  .bg-grid, .bg-glow, .btn, .tabs, .presets { display: none !important; }
+  .card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.calculating {
+  animation: pulse 1s infinite;
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow glow-1"></div>
+<div class="bg-glow glow-2"></div>
+
+<header>
+  <div class="header-badge">
+    <i class="fas fa-bolt"></i>
+    Engineering Suite v2.0
+  </div>
+  <h1 class="logo">PowerSys Pro</h1>
+  <p class="subtitle">Professional power system engineering calculations &mdash; short circuit, voltage drop, transformer sizing &amp; more</p>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-value" id="statCalcs">6</div>
+    <div class="stat-label">Calculation Modules</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value">12</div>
+    <div class="stat-label">Input Parameters</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value" id="statResults">0</div>
+    <div class="stat-label">Computed Results</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-value" id="statStatus">--</div>
+    <div class="stat-label">Status</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="layout">
+    <!-- Input Panel -->
+    <div class="card fade-in">
+      <div class="card-header">
+        <div class="card-icon icon-cyan"><i class="fas fa-sliders-h"></i></div>
+        <div>
+          <div class="card-title">Input Parameters</div>
+          <div class="card-subtitle">Configure your power system values</div>
+        </div>
+      </div>
+
+      <div class="presets">
+        <button class="preset-btn" onclick="applyPreset('industrial')">🏭 Industrial 500kVA</button>
+        <button class="preset-btn" onclick="applyPreset('commercial')">🏢 Commercial 250kVA</button>
+        <button class="preset-btn" onclick="applyPreset('residential')">🏠 Residential 100kVA</button>
+        <button class="preset-btn" onclick="applyPreset('utility')">⚡ Utility 1000kVA</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('system')">System</button>
+        <button class="tab" onclick="switchTab('transformer')">Transformer</button>
+        <button class="tab" onclick="switchTab('line')">Line & Load</button>
+      </div>
+
+      <!-- System Tab -->
+      <div class="tab-content active" id="tab-system">
+        <div class="input-group">
+          <div class="input-label">
+            <span>Base Power</span>
+            <span class="input-hint">System MVA base</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-bolt icon-left"></i>
+            <input type="number" id="baseMva" value="100.0" step="1" min="0.1">
+            <span class="input-unit">MVA</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Base Voltage</span>
+            <span class="input-hint">Primary voltage level</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-plug icon-left"></i>
+            <input type="number" id="baseKv" value="10.0" step="0.1" min="0.1">
+            <span class="input-unit">kV</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transformer Tab -->
+      <div class="tab-content" id="tab-transformer">
+        <div class="input-group">
+          <div class="input-label">
+            <span>Transformer Rating</span>
+            <span class="input-hint">Nameplate kVA</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-database icon-left"></i>
+            <input type="number" id="transformerKva" value="500.0" step="1" min="1">
+            <span class="input-unit">kVA</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Primary Voltage</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-arrow-up icon-left"></i>
+            <input type="number" id="vPrimary" value="10.0" step="0.01" min="0.01">
+            <span class="input-unit">kV</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Secondary Voltage</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-arrow-down icon-left"></i>
+            <input type="number" id="vSecondary" value="0.415" step="0.001" min="0.001">
+            <span class="input-unit">kV</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Impedance</span>
+            <span class="input-hint">Transformer %Z</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-percent icon-left"></i>
+            <input type="number" id="pctZ" value="5.0" step="0.1" min="0.1">
+            <span class="input-unit">%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line & Load Tab -->
+      <div class="tab-content" id="tab-line">
+        <div class="input-group">
+          <div class="input-label">
+            <span>Line Length</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-ruler icon-left"></i>
+            <input type="number" id="lineLength" value="100" step="1" min="0">
+            <span class="input-unit">m</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Line Resistance</span>
+            <span class="input-hint">R per km</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-omega icon-left"></i>
+            <input type="number" id="lineR" value="0.5" step="0.001" min="0">
+            <span class="input-unit">Ω/km</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Line Reactance</span>
+            <span class="input-hint">X per km</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-wave-square icon-left"></i>
+            <input type="number" id="lineX" value="0.3" step="0.001" min="0">
+            <span class="input-unit">Ω/km</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Connected Load</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-industry icon-left"></i>
+            <input type="number" id="loadKw" value="400.0" step="1" min="0">
+            <span class="input-unit">kW</span>
+          </div>
+        </div>
+        <div class="input-group">
+          <div class="input-label">
+            <span>Power Factor</span>
+          </div>
+          <div class="input-wrapper">
+            <i class="fas fa-chart-line icon-left"></i>
+            <input type="number" id="pf" value="0.80" step="0.01" min="0.1" max="1.0">
+            <span class="input-unit">lag</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px">
+        <button class="btn btn-primary" onclick="calculateAll()" id="calcBtn">
+          <i class="fas fa-calculator"></i> Run Calculations
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Panel -->
+    <div class="card results-card fade-in">
+      <div class="card-header">
+        <div class="card-icon icon-purple"><i class="fas fa-chart-bar"></i></div>
+        <div>
+          <div class="card-title">Results Dashboard</div>
+          <div class="card-subtitle">Real-time engineering calculations</div>
+        </div>
+      </div>
+
+      <div class="result-grid" id="resultGrid">
+        <div class="result-item">
+          <div class="result-icon icon-cyan" style="background:rgba(0,240,255,0.1)"><i class="fas fa-bolt"></i></div>
+          <div class="result-label">SC Sym Current</div>
+          <div class="result-value" id="rScSym">--</div>
+          <div class="result-unit">kA</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon icon-pink" style="background:rgba(244,114,182,0.1)"><i class="fas fa-wave-square"></i></div>
+          <div class="result-label">SC Asym Current</div>
+          <div class="result-value" id="rScAsym">--</div>
+          <div class="result-unit">kA</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon icon-purple" style="background:rgba(124,58,237,0.1)"><i class="fas fa-arrow-down"></i></div>
+          <div class="result-label">Voltage Drop</div>
+          <div class="result-value" id="rVdrop">--</div>
+          <div class="result-unit">%</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon" style="background:rgba(34,197,94,0.1);color:var(--success)"><i class="fas fa-battery-full"></i></div>
+          <div class="result-label">Voltage at Load</div>
+          <div class="result-value" id="rVload">--</div>
+          <div class="result-unit">kV</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon" style="background:rgba(234,179,8,0.1);color:var(--warning)"><i class="fas fa-server"></i></div>
+          <div class="result-label">Transformer Loading</div>
+          <div class="result-value" id="rTrLoad">--</div>
+          <div class="result-unit">%</div>
+        </div>
+        <div class="result-item">
+          <div class="result-icon" style="background:rgba(0,240,255,0.1);color:var(--primary)"><i class="fas fa-th-large"></i></div>
+          <div class="result-label">Recommended Size</div>
+          <div class="result-value" id="rTrSize">--</div>
+          <div class="result-unit"></div>
+        </div>
+      </div>
+
+      <!-- Status badge -->
+      <div style="text-align:center">
+        <div class="status-badge status-ok" id="statusBadge">
+          <i class="fas fa-check-circle"></i> Ready &mdash; Run calculations
+        </div>
+      </div>
+
+      <!-- Issues list -->
+      <div id="issuesList" style="margin-top:16px"></div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button class="btn btn-outline btn-sm" onclick="showReport()"><i class="fas fa-file-alt"></i> Report</button>
+        <button class="btn btn-outline btn-sm" onclick="copyResults()"><i class="fas fa-copy"></i> Copy</button>
+        <button class="btn btn-outline btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+      </div>
+
+      <!-- Report modal -->
+      <div id="reportModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;align-items:center;justify-content:center;padding:20px">
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:28px;max-width:650px;width:100%;max-height:85vh;overflow-y:auto">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <h3 style="font-size:1.2rem;font-weight:700;color:var(--primary)"><i class="fas fa-file-alt"></i> Engineering Report</h3>
+            <button onclick="closeReport()" style="background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer"><i class="fas fa-times"></i></button>
+          </div>
+          <div id="reportBody" class="output-panel"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">PowerSys Pro &copy; 2026 &mdash; Engineering Automation Suite</div>
+  <div class="footer-tech">Powered by <span>Poolside Laguna S 2.1</span> + <span>Solar Pro 4</span> | Built with Hermes Agent</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SQRT3 = Math.sqrt(3);
+
+const presets = {
+  industrial: { baseMva: 100, baseKv: 10, transformerKva: 500, vPrimary: 10, vSecondary: 0.415, pctZ: 5, lineLength: 100, lineR: 0.5, lineX: 0.3, loadKw: 400, pf: 0.8 },
+  commercial: { baseMva: 50, baseKv: 10, transformerKva: 250, vPrimary: 10, vSecondary: 0.4, pctZ: 4.5, lineLength: 80, lineR: 0.6, lineX: 0.35, loadKw: 180, pf: 0.85 },
+  residential: { baseMva: 25, baseKv: 10, transformerKva: 100, vPrimary: 10, vSecondary: 0.23, pctZ: 4, lineLength: 50, lineR: 0.8, lineX: 0.4, loadKw: 60, pf: 0.9 },
+  utility: { baseMva: 500, baseKv: 33, transformerKva: 1000, vPrimary: 33, vSecondary: 11, pctZ: 8, lineLength: 500, lineR: 0.2, lineX: 0.4, loadKw: 800, pf: 0.85 }
+};
+
+function applyPreset(name) {
+  const p = presets[name];
+  if (!p) return;
+  Object.keys(p).forEach(k => {
+    const el = document.getElementById(k);
+    if (el) el.value = p[k];
+  });
+  showToast(`✅ Loaded ${name} preset`);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelectorAll('.tab')[['system','transformer','line'].indexOf(name)].classList.add('active');
+}
+
+function getVal(id) {
+  const v = parseFloat(document.getElementById(id).value);
+  return isNaN(v) ? 0 : v;
+}
+
+function calculateAll() {
+  const btn = document.getElementById('calcBtn');
+  btn.classList.add('calculating');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Calculating...';
+
+  setTimeout(() => {
+    const baseMva = getVal('baseMva');
+    const baseKv = getVal('baseKv');
+    const transformerKva = getVal('transformerKva');
+    const vPrimary = getVal('vPrimary');
+    const vSecondary = getVal('vSecondary');
+    const pctZ = getVal('pctZ');
+    const lineLength = getVal('lineLength');
+    const lineR = getVal('lineR');
+    const lineX = getVal('lineX');
+    const loadKw = getVal('loadKw');
+    const pf = getVal('pf') || 1;
+
+    // Short Circuit
+    const scMva = (baseMva * 100) / pctZ;
+    const scSym = scMva / (SQRT3 * baseKv);
+    const asymFactor = 1.5;
+    const scAsym = scSym * asymFactor;
+
+    // Voltage Drop
+    const lineKm = lineLength / 1000;
+    const rTot = lineR * lineKm;
+    const xTot = lineX * lineKm;
+    const iLoad = loadKw / (SQRT3 * vSecondary * pf);
+    const sinPhi = Math.sqrt(1 - pf*pf);
+    const vDropV = iLoad * (rTot * pf + xTot * sinPhi);
+    const vDropPct = (vDropV / (vSecondary * 1000)) * 100;
+    const vLoad = vSecondary - (vDropV / 1000);
+
+    // Transformer Sizing
+    const safetyFactor = 1.25;
+    const reqKva = loadKw / (pf * safetyFactor);
+    const actKva = loadKw / pf;
+    const utilPct = (actKva / transformerKva) * 100;
+
+    const stdSizes = [15,30,50,100,150,225,300,500,750,1000,1500,2000,2500,3000,5000,7500,10000,15000,20000];
+    let recSize = stdSizes[stdSizes.length - 1];
+    for (let s of stdSizes) { if (s >= reqKva) { recSize = s; break; } }
+    const sizeStr = recSize >= 1000 ? (recSize/1000).toFixed(1)+' MVA' : recSize+' kVA';
+
+    // Update DOM
+    document.getElementById('rScSym').textContent = scSym.toFixed(3);
+    document.getElementById('rScAsym').textContent = scAsym.toFixed(3);
+    document.getElementById('rVdrop').textContent = vDropPct.toFixed(2);
+    document.getElementById('rVload').textContent = vLoad.toFixed(4);
+    document.getElementById('rTrLoad').textContent = utilPct.toFixed(1);
+    document.getElementById('rTrSize').textContent = sizeStr;
+
+    // Stats
+    document.getElementById('statResults').textContent = '6';
+    document.getElementById('statStatus').textContent = 'OK';
+
+    // Highlight
+    document.querySelectorAll('.result-item').forEach(el => el.classList.add('highlight'));
+    setTimeout(() => document.querySelectorAll('.result-item').forEach(el => el.classList.remove('highlight')), 2000);
+
+    // Assessment
+    const badge = document.getElementById('statusBadge');
+    const issuesList = document.getElementById('issuesList');
+    issuesList.innerHTML = '';
+    let issues = [];
+
+    if (scSym > 50) issues.push({type:'danger', icon:'fa-exclamation-triangle', text:`High fault current: ${scSym.toFixed(1)} kA exceeds 50 kA limit`});
+    if (vDropPct > 5) issues.push({type:'danger', icon:'fa-arrow-down', text:`Excessive voltage drop: ${vDropPct.toFixed(1)}% > 5% max`});
+    else if (vDropPct > 3) issues.push({type:'warn', icon:'fa-exclamation', text:`Elevated voltage drop: ${vDropPct.toFixed(1)}% approaching 5% limit`});
+    if (utilPct > 80) issues.push({type:'danger', icon:'fa-fire', text:`Transformer overloaded: ${utilPct.toFixed(1)}% > 80% recommended`});
+    else if (utilPct > 60) issues.push({type:'warn', icon:'fa-exclamation', text:`High transformer loading: ${utilPct.toFixed(1)}%`});
+    if (vLoad < vSecondary * 0.9) issues.push({type:'warn', icon:'fa-battery-quarter', text:`Low voltage at load: ${(vLoad*1000).toFixed(0)}V`});
+
+    if (issues.length === 0) {
+      badge.className = 'status-badge status-ok';
+      badge.innerHTML = '<i class="fas fa-check-circle"></i> All parameters within acceptable limits';
+      document.getElementById('statStatus').textContent = 'PASS';
+    } else {
+      const hasDanger = issues.some(i => i.type === 'danger');
+      badge.className = hasDanger ? 'status-badge status-danger' : 'status-badge status-warn';
+      badge.innerHTML = `<i class="fas fa-${hasDanger ? 'times-circle' : 'exclamation-circle'}"></i> ${issues.length} issue${issues.length>1?'s':''} detected`;
+      document.getElementById('statStatus').textContent = hasDanger ? 'FAIL' : 'WARN';
+
+      issues.forEach(issue => {
+        const div = document.createElement('div');
+        div.style.cssText = `display:flex;align-items:center;gap:10px;padding:10px 14px;margin-top:8px;border-radius:10px;font-size:0.78rem;font-weight:500;background:${issue.type==='danger'?'rgba(239,68,68,0.08)':'rgba(234,179,8,0.08)'};border:1px solid ${issue.type==='danger'?'rgba(239,68,68,0.2)':'rgba(234,179,8,0.2)'};color:${issue.type==='danger'?'var(--danger)':'var(--warning)'}`;
+        div.innerHTML = `<i class="fas ${issue.icon}"></i> ${issue.text}`;
+        issuesList.appendChild(div);
+      });
+    }
+
+    // Reset button
+    btn.classList.remove('calculating');
+    btn.innerHTML = '<i class="fas fa-calculator"></i> Run Calculations';
+    showToast('✅ Calculations complete');
+
+    // Store for report
+    window.lastCalc = { scSym, scAsym, scMva, asymFactor, vDropPct, vDropV, vLoad, utilPct, sizeStr, reqKva, iLoad, rTot, xTot, baseMva, baseKv, transformerKva, vPrimary, vSecondary, pctZ, lineLength, lineR, lineX, loadKw, pf, lineKm };
+  }, 600);
+}
+
+function showReport() {
+  if (!window.lastCalc) { showToast('⚠️ Run calculations first'); return; }
+  const c = window.lastCalc;
+  const now = new Date().toLocaleString();
+  const report = `
+═══════════════════════════════════════════════════
+          POWERSYSTEM ENGINEERING REPORT
+          Generated: ${now}
+═══════════════════════════════════════════════════
+
+INPUT PARAMETERS
+───────────────────────────────────────────────────
+System
+  Base MVA:                ${c.baseMva.toFixed(2)} MVA
+  Base Voltage:            ${c.baseKv.toFixed(2)} kV
+
+Transformer
+  Rating:                  ${c.transformerKva.toFixed(0)} kVA
+  Primary Voltage:         ${c.vPrimary.toFixed(3)} kV
+  Secondary Voltage:       ${c.vSecondary.toFixed(3)} kV
+  Impedance:               ${c.pctZ.toFixed(1)} %Z
+
+Line & Load
+  Line Length:             ${c.lineLength.toFixed(0)} m (${c.lineKm.toFixed(3)} km)
+  Line Resistance:         ${c.lineR.toFixed(3)} Ω/km
+  Line Reactance:          ${c.lineX.toFixed(3)} Ω/km
+  Connected Load:          ${c.loadKw.toFixed(0)} kW
+  Power Factor:            ${c.pf.toFixed(2)} lag
+
+SHORT CIRCUIT ANALYSIS
+───────────────────────────────────────────────────
+  Short Circuit MVA:       ${c.scMva.toFixed(2)} MVA
+  Symmetrical Current:     ${c.scSym.toFixed(3)} kA
+  Asymmetry Factor:        ${c.asymFactor.toFixed(1)}× (first cycle peak)
+  Asymmetrical Current:    ${c.scAsym.toFixed(3)} kA
+
+VOLTAGE DROP ANALYSIS
+───────────────────────────────────────────────────
+  Line Resistance (total): ${c.rTot.toFixed(4)} Ω
+  Line Reactance (total):  ${c.xTot.toFixed(4)} Ω
+  Load Current:            ${c.iLoad.toFixed(2)} A
+  Voltage Drop:            ${c.vDropV.toFixed(2)} V (${c.vDropPct.toFixed(2)}%)
+  Voltage at Load:         ${c.vLoad.toFixed(4)} kV (${(c.vLoad*1000).toFixed(1)} V)
+
+TRANSFORMER SIZING
+───────────────────────────────────────────────────
+  Required Capacity:       ${c.reqKva.toFixed(2)} kVA
+  Current Utilization:     ${c.utilPct.toFixed(1)} %
+  Recommended Size:        ${c.sizeStr}
+
+═══════════════════════════════════════════════════
+  ENGINEERING ASSESSMENT
+════════════════════════════════════════════════───
+  ${c.scSym > 50 ? '⚠ FAULT CURRENT EXCEEDS 50 kA DESIGN LIMIT' : '✓ Fault current within acceptable limits'}
+  ${c.vDropPct > 5 ? '⚠ VOLTAGE DROP EXCEEDS 5% MAXIMUM' : c.vDropPct > 3 ? '⚡ Voltage drop approaching 5% threshold' : '✓ Voltage drop within acceptable limits'}
+  ${c.utilPct > 80 ? '⚠ TRANSFORMER OVERLOADED (>80%)' : c.utilPct > 60 ? '⚡ High transformer loading' : '✓ Transformer loading within acceptable limits'}
+═══════════════════════════════════════════════════`;
+
+  document.getElementById('reportBody').textContent = report;
+  document.getElementById('reportModal').style.display = 'flex';
+}
+
+function closeReport() {
+  document.getElementById('reportModal').style.display = 'none';
+}
+
+function copyResults() {
+  if (!window.lastCalc) { showToast('⚠️ Run calculations first'); return; }
+  const c = window.lastCalc;
+  const text = `PowerSys Pro Results:\nSC Sym: ${c.scSym.toFixed(3)} kA\nSC Asym: ${c.scAsym.toFixed(3)} kA\nV-Drop: ${c.vDropPct.toFixed(2)}%\nV-Load: ${c.vLoad.toFixed(4)} kV\nTR Load: ${c.utilPct.toFixed(1)}%\nRec Size: ${c.sizeStr}`;
+  navigator.clipboard.writeText(text).then(() => showToast('✅ Results copied to clipboard'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Auto-calculate on load with industrial preset
+window.addEventListener('load', () => {
+  applyPreset('industrial');
+  calculateAll();
+});
+
+// Keyboard shortcut: Ctrl+Enter to calculate
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) calculateAll();
+});
+</script>
+</body>
+</html>
